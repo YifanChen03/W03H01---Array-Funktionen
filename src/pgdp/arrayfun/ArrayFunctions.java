@@ -1,5 +1,6 @@
 package pgdp.arrayfun;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 public class ArrayFunctions {
@@ -10,7 +11,8 @@ public class ArrayFunctions {
 
     public static void main(String[] args) {
         //example call
-        System.out.println(Arrays.toString(zip(new int[]{1, 3}, new int[]{2, 4})));
+        //System.out.println(Arrays.toString(zip(new int[]{1, 3}, new int[]{2, 4})));
+        System.out.println(sumOfSquares(new int[]{}));
     }
 
     /** Berechnet für das übergebene Array die Summe der Quadrate der Einträge.
@@ -20,8 +22,24 @@ public class ArrayFunctions {
      * @return Die Summe der Quadrate, wenn diese in einen 'long' passt, -1 sonst.
      */
     public static long sumOfSquares(int[] array) {
-        // TODO
-        return 0L;
+        BigInteger sum = new BigInteger("0");
+        //loop to calculate sum of squares of every entry
+        for (int i = 0; i < array.length; i++) {
+            //check if integer is too large
+            BigInteger factor = BigInteger.valueOf(array[i]);
+            sum = sum.add(factor.multiply(factor));
+            //System.out.println(sum);
+        }
+        //check if sum is too large
+        //System.out.println(Integer.MAX_VALUE);
+        //System.out.println(Long.MAX_VALUE);
+        //System.out.println(sum);
+        if (sum.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) == 1) {
+            System.out.println("Overflow!");
+            return -1L;
+        } else {
+            return sum.longValue();
+        }
     }
 
 
