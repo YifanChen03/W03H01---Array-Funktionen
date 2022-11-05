@@ -15,7 +15,7 @@ public class ArrayFunctions {
 
         //System.out.println(Arrays.toString(zip(new int[]{1, 3, 5, 7, 9, 11, 13, 15, 16, 17, 18, 19}, new int[]{2, 4, 6, 8, 10, 12, 14})));
 
-        //System.out.println(Arrays.toString(zipMany(new int[][]{{1, 4, 7, 10}, {2, 5, 8, 11, 13, 15, 17, 18, 19}, {3, 6, 9, 12, 14, 16}})));
+        System.out.println(Arrays.toString(zipMany(new int[][]{{1, 4, 7, 10}, {2, 5, 8, 11, 13, 15, 17, 18, 19}, {3, 6, 9, 12, 14, 16}})));
 
         //System.out.println(Arrays.toString(filter(new int[]{3, 2, 6, 5, 1, 7, 7, 5, 9}, 0, 9)));
 
