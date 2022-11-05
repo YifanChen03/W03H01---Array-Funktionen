@@ -11,8 +11,11 @@ public class ArrayFunctions {
 
     public static void main(String[] args) {
         //example call
-        //System.out.println(Arrays.toString(zip(new int[]{1, 3}, new int[]{2, 4})));
-        System.out.println(sumOfSquares(new int[]{}));
+        //System.out.println(sumOfSquares(new int[]{})); //(checked) negative numbers, Long.MAX_VALUE, Integer.MAX_VALUE
+
+        //System.out.println(Arrays.toString(zip(new int[]{1, 3, 5, 7, 9, 11, 13, 15, 16, 17, 18, 19}, new int[]{2, 4, 6, 8, 10, 12, 14})));
+
+        //System.out.println(Arrays.toString(zipMany(new int[][]{{1, 4, 7, 10}, {2, 5, 8, 11, 13, 15, 17, 18, 19}, {3, 6, 9, 12, 14, 16}})));
     }
 
     /** Berechnet für das übergebene Array die Summe der Quadrate der Einträge.
@@ -25,15 +28,11 @@ public class ArrayFunctions {
         BigInteger sum = new BigInteger("0");
         //loop to calculate sum of squares of every entry
         for (int i = 0; i < array.length; i++) {
-            //check if integer is too large
-            BigInteger factor = BigInteger.valueOf(array[i]);
-            sum = sum.add(factor.multiply(factor));
-            //System.out.println(sum);
+            long factor_long = array[i]; //int to long to bigint
+            BigInteger factor_bigint = BigInteger.valueOf(factor_long);
+            sum = sum.add(factor_bigint.multiply(factor_bigint));
         }
         //check if sum is too large
-        //System.out.println(Integer.MAX_VALUE);
-        //System.out.println(Long.MAX_VALUE);
-        //System.out.println(sum);
         if (sum.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) == 1) {
             System.out.println("Overflow!");
             return -1L;
@@ -51,8 +50,32 @@ public class ArrayFunctions {
      * @return 'a' und 'b' zusammengezipped.
      */
     public static int[] zip(int[] a, int[] b) {
-        // TODO
-        return null;
+        int[] z_ab = new int[a.length + b.length];
+        int i_a = 0;
+        int i_b = 0;
+        //loop to zip arrays
+        for (int i = 0; i < a.length + b.length; i++) {
+            //if round is even add from a else add from b
+            if (i % 2 == 0) {
+                //if a is empty add from b and the other way round
+                if (i_a < a.length) {
+                    z_ab[i] = a[i_a];
+                    i_a++;
+                } else if (i_b < b.length) {
+                        z_ab[i] = b[i_b];
+                        i_b++;
+                }
+            } else {
+                if (i_b < b.length) {
+                    z_ab[i] = b[i_b];
+                    i_b++;
+                } else if (i_a < a.length) {
+                        z_ab[i] = a[i_a];
+                        i_a++;
+                }
+            }
+        }
+        return z_ab;
     }
 
     /** Methode, die eine beliebige Zahl an Arrays (dargestellt als Array von Arrays) zu einem einzigen Array verbindet,
@@ -62,8 +85,34 @@ public class ArrayFunctions {
      * @return Die Arrays in 'arrays' zusammengezipped
      */
     public static int[] zipMany(int[][] arrays) {
-        // TODO
-        return null;
+        int n = 0; //calculate sum of entries of all arrays
+        int y = 0; // arrays[y][x] just for better visualization
+        int x = 0;
+        int e = 0; //entry in zip_array
+        int max_length = 0; //longest arrays[y]
+        int round = 0;
+        int[] zip_array;
+        //calculate amount of entries
+        for (int i = 0; i < arrays.length; i++) {
+            n = n + arrays[i].length;
+            if (arrays[i].length > max_length) {
+                max_length = arrays[i].length;
+            }
+        }
+        zip_array = new int[n];
+        //start zipping arrays
+        while (round < max_length) {
+            x = round;
+            for (int i = 0; i < arrays.length; i++) {
+                y = i;
+                if (arrays[y].length > x) {
+                    zip_array[e] = arrays[y][x];
+                    e++;
+                }
+            }
+            round++;
+        }
+        return zip_array;
     }
 
     /** Behält aus dem übergebenen Array nur die Einträge, die innerhalb der übergebenen Grenzen liegen.
