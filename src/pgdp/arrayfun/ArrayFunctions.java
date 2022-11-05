@@ -19,7 +19,9 @@ public class ArrayFunctions {
 
         //System.out.println(Arrays.toString(filter(new int[]{3, 2, 6, 5, 1, 7, 7, 5, 9}, 0, 9)));
 
-        rotate(new int[]{1, 2, 3, 4, 5}, 0);
+        //rotate(new int[]{1, 2, 3, -234234234, 5}, 3);
+
+        quantities(new int[]{1, 2, 3, 4, 5, 3, 2, 237, 237, 2343, 238});
     }
 
     /** Berechnet für das übergebene Array die Summe der Quadrate der Einträge.
@@ -205,7 +207,53 @@ public class ArrayFunctions {
      * @return Das Array mit den Vielfachheiten der einzelnen Zahlen, wiederum als Integer-Arrays mit zwei Einträgen dargestellt.
      */
     public static int[][] quantities(int[] array) {
-        // TODO
-        return null;
+        int[][] quantities_array;
+        int[] uniqueN_array;
+        int n_length = 0;
+        String uniqueN = "*";
+
+        for (int i = 0; i < array.length; i++) {
+            //check if number is unique and create String with all unique numbers
+            if (!uniqueN.contains("*" + array[i] + "*")) {
+                uniqueN = uniqueN + array[i] + "*";
+            }
+
+        }
+
+        //calculate how many unique numbers there are to determine length of uniqueN_array
+        for (int a = 0; a < uniqueN.length(); a++) {
+            if (uniqueN.charAt(a) == '*') {
+                n_length++;
+            }
+        }
+        //set uniqueN_array length to (n_length - 1) because n_length counts the "*" in pos 0
+        uniqueN_array = new int[n_length - 1];
+
+        //insert unique numbers into uniqueN_array
+        int round = 0;
+        int pos = 0;
+        while (pos < uniqueN.length() - 1) {
+            int i1, i2;
+            i1 = uniqueN.indexOf("*", pos) + 1;
+            i2 = uniqueN.indexOf("*", pos + 1);
+            uniqueN_array[round] = Integer.parseInt(uniqueN.substring(i1, i2));
+            pos = i2;
+            round++;
+        }
+
+        //count the quantities for each unique number and insert into quantities_array
+        quantities_array = new int[uniqueN_array.length][2];
+        for (int i = 0; i < uniqueN_array.length; i++) {
+            int n = 0;
+            quantities_array[i][0] = uniqueN_array[i];
+            //count quantities for each number
+            for (int j = 0; j < array.length; j++) {
+                if (array [j] == uniqueN_array[i]) {
+                    n++;
+                }
+            }
+            quantities_array[i][1] = n;
+        }
+        return quantities_array;
     }
 }
