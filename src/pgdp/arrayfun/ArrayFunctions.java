@@ -16,6 +16,10 @@ public class ArrayFunctions {
         //System.out.println(Arrays.toString(zip(new int[]{1, 3, 5, 7, 9, 11, 13, 15, 16, 17, 18, 19}, new int[]{2, 4, 6, 8, 10, 12, 14})));
 
         //System.out.println(Arrays.toString(zipMany(new int[][]{{1, 4, 7, 10}, {2, 5, 8, 11, 13, 15, 17, 18, 19}, {3, 6, 9, 12, 14, 16}})));
+
+        //System.out.println(Arrays.toString(filter(new int[]{3, 2, 6, 5, 1, 7, 7, 5, 9}, 0, 9)));
+
+        rotate(new int[]{1, 2, 3, 4, 5}, 0);
     }
 
     /** Berechnet für das übergebene Array die Summe der Quadrate der Einträge.
@@ -25,7 +29,7 @@ public class ArrayFunctions {
      * @return Die Summe der Quadrate, wenn diese in einen 'long' passt, -1 sonst.
      */
     public static long sumOfSquares(int[] array) {
-        BigInteger sum = new BigInteger("0");
+        BigInteger sum = BigInteger.valueOf(0L);
         //loop to calculate sum of squares of every entry
         for (int i = 0; i < array.length; i++) {
             long factor_long = array[i]; //int to long to bigint
@@ -124,8 +128,37 @@ public class ArrayFunctions {
      * @return Das gefilterte Array
      */
     public static int[] filter(int[] array,int min,int max) {
-        // TODO
-        return null;
+        int[] filtered_array;
+        int n_length = 0;
+        int r = 0;
+        String filtered_numbers = "";
+        //check if maximum number is greater or equal to minimum number
+        if (max >= min) {
+            //get all allowed numbers in a String
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] >= min && array[i] <= max) {
+                    filtered_numbers = filtered_numbers + "*" + array[i];
+                }
+            }
+            //calculate how many numbers there are to determine length of filtered_array
+            for (int i = 0; i < filtered_numbers.length(); i++) {
+                if (filtered_numbers.charAt(i) == '*') {
+                    n_length++;
+                }
+            }
+            filtered_array = new int[n_length];
+            //insert values into filtered_array
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] >= min && array[i] <= max) {
+                    filtered_array[r] = array[i];
+                    r++;
+                }
+            }
+        } else {
+            //return empty array if min greater than max
+            return new int[0];
+        }
+        return filtered_array;
     }
 
     /** Rotiert das übergebene Array um die übergebene Anzahl an Schritten nach rechts.
@@ -135,7 +168,30 @@ public class ArrayFunctions {
      * @param amount Ein beliebiger Integer
      */
     public static void rotate(int[] array, int amount) {
-        //TODO
+        //tested with Integer.MIN % MAX, 0, 1, -1
+        int save_value = 0;
+        int n_at_index = 0;
+        //check for empty arrays
+        if (array.length > 0) {
+            //convert negative amount into positive, mod is for simplification - see l.179f.
+            amount = (amount % array.length + array.length);
+            //avoid unnecessary rotations by making most possible rotations the length of array
+            amount = amount % array.length;
+            for (int r = 0; r < amount; r++) {
+                //rotate by one
+                save_value = array[0];
+                for (int i = 0; i < array.length - 1; i++) {
+                    if (i == 0) {
+                        array[0] = array[array.length - 1];
+                    }
+                    if (i < array.length - 1) {
+                        n_at_index = array[i + 1];
+                        array[i + 1] = save_value;
+                        save_value = n_at_index;
+                    }
+                }
+            }
+        }
     }
 
     /** Zählt die Anzahl an Vorkommen jeder Zahl im übergebenen Array, die in diesem mindestens einmal vorkommt.
